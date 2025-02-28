@@ -1,0 +1,33 @@
+.weekProgressWidget table {
+  background-color: #fff;
+  border-radius: 20px;
+  width: 100%;
+  padding: 20px 25px;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+
+.weekProgressWidget table thead tr {
+  border-radius: 8px;
+  width: 100%;
+  background-color: #000;
+  color: white;
+  height: 45px;
+}
+
+.weekProgressWidget table thead tr:first-child th:first-child {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.weekProgressWidget table thead tr:first-child th:last-child {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.weekProgressWidget table * {
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 24px;
+  text-align: center;
+}

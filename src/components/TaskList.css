@@ -1,0 +1,59 @@
+.taskItem {
+    display: flex;
+    cursor: pointer;
+    padding-bottom: 10px;
+  }
+  .taskName {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    color: #000;
+    gap: 15px;
+    cursor: pointer;
+  }
+  .checkboxInput {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 24px;
+    height: 24px;
+    border: 1px solid #b3b3b3;
+    border-radius: 100%;
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+  }
+  .checkboxInput:hover {
+    border: 1px solid #333;
+  }
+  .checkboxInput:checked {
+    background: #333;
+  }
+  .checkboxInput:checked::after {
+    content: "✔";
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 150%;
+    text-align: center;
+    color: #fff;
+  }
+  .completed {
+    text-decoration: line-through;
+    color: #b3b3b3;
+  }
+  .buttonDeleteTask {
+    border: 1px solid #eaecf0;
+    border-radius: 12px;
+    padding: 0;
+    width: 36px;
+    height: 36px;
+    margin-left: auto;
+    background: #fff;
+    cursor: pointer;
+  }
+  .buttonDeleteTask:hover {
+    border: 1px solid #686868;
+  }

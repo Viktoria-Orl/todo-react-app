@@ -1,0 +1,47 @@
+.targetWidgetContainer {
+  display: grid;
+  width: 65%;
+  gap: 5% 5%;
+  grid-auto-flow: column;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-flow: row;
+}
+
+.targetWidgetTaskContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border-radius: 20px;
+  background: #fff;
+  padding: 16px 20px;
+  font-family: var(--second-family);
+  font-weight: 500;
+  font-size: 14px;
+  color: #2f2f2f;
+}
+
+.targetWidgetPercent {
+  font-weight: 700;
+  color: #b0b0b0;
+}
+.targetWidgetPercent__achieved {
+  font-weight: 700;
+  color: #37c871;
+}
+
+.targetWidgetTaskName {
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.targetWidgetAchievedStatus {
+  padding: 1.5px 10px;
+  color: #37c871;
+  border-radius: 35px;
+  background: #d7ffe7;
+}
+
+.targetWidgetUnachievedStatus {
+  color: #959595;
+}

@@ -1,0 +1,39 @@
+.container {
+    display: flex;
+    width: 100%;
+    gap: 2%;
+  }
+
+.dateHeading {
+    margin-bottom: 25px;
+    font-family: var(--font-family);
+    font-weight: 700;
+    font-size: 36px;
+    color: #000;
+    width: 100%;
+  }
+  
+.tasksContainer {
+  background: #fff;
+  border-radius: 20px;
+  width: 54%;
+  padding: 40px 35px;
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 24px;
+  color: #000;
+}
+
+.tasksContainer > ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 1;
+}
+
+.rightContainer {
+  width: 44%;
+  flex-shrink: 1;
+}
