@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/todo-react-app/static/css/main.f3e6b59f.css",
+    "main.js": "/todo-react-app/static/js/main.90c9de34.js",
+    "static/media/Inter-VariableFont_opsz,wght.ttf": "/todo-react-app/static/media/Inter-VariableFont_opsz,wght.e05c5f3d1fa6a3893d84.ttf",
+    "static/media/Rubik-VariableFont_wght.ttf": "/todo-react-app/static/media/Rubik-VariableFont_wght.3a4acc0356c6ea73f2c3.ttf",
+    "static/media/Nunito-VariableFont_wght.ttf": "/todo-react-app/static/media/Nunito-VariableFont_wght.c0f0807a40aebdc41b40.ttf",
+    "static/media/deleteButton.svg": "/todo-react-app/static/media/deleteButton.3037f32483b16b87cea508bb891abf04.svg",
+    "static/media/homeButton.svg": "/todo-react-app/static/media/homeButton.f514be880bbe1c5892926f8773a12236.svg",
+    "index.html": "/todo-react-app/index.html",
+    "static/media/statisticsButton.svg": "/todo-react-app/static/media/statisticsButton.b9117f519698f5d9ec744816231d357f.svg",
+    "main.f3e6b59f.css.map": "/todo-react-app/static/css/main.f3e6b59f.css.map",
+    "main.90c9de34.js.map": "/todo-react-app/static/js/main.90c9de34.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f3e6b59f.css",
+    "static/js/main.90c9de34.js"
+  ]
+}
