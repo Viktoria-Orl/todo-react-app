@@ -1,17 +1,12 @@
 import React from "react";
 import classnames from "classnames";
 import { ReactComponent as DeleteIcon } from "../icons/deleteButton.svg";
-import { TList } from "../types/list.types";
+import { useList } from "../context/ListContext.tsx";
 import "./TaskList.css";
 
-interface TaskListProps {
-  list: TList[];
-  todayDate: string;
-  deleteItem: (id: number) => void;
-  checkItem: (id: number) => void;
-}
+function TaskList() {
+  const { list, todayDate, deleteTask, checkTask } = useList();
 
-function TaskList({ list, todayDate, deleteItem, checkItem }: TaskListProps) {
   return (
     <ul>
       {list
@@ -34,13 +29,13 @@ function TaskList({ list, todayDate, deleteItem, checkItem }: TaskListProps) {
                     "checkboxInput",
                     isCompletedToday ? "checked" : ""
                   )}
-                  onChange={() => {checkItem(listItem.id)}}
+                  onChange={() => {checkTask(listItem.id)}}
                 />
                 {listItem.taskName}
               </label>
               <button
                 className="buttonDeleteTask"
-                onClick={() => deleteItem(listItem.id)}
+                onClick={() => deleteTask(listItem.id)}
               >
                 <DeleteIcon />
               </button>

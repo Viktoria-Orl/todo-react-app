@@ -1,13 +1,10 @@
 import React from "react";
-import { TList } from "../types/list.types";
+import { useList } from "../context/ListContext.tsx";
 import "./TargetWidget.css";
 
-interface TargetWidgetProps {
-  list: TList[];
-  today: Date;
-}
-
-export default function TargetWidget({ list, today }: TargetWidgetProps) {
+export default function TargetWidget() {
+  const today = new Date();
+  const { list } = useList();
   const activeTaskArray = list.filter((listItem) => !listItem.isDeleted); // массив активных (неудаленных) задач
 
   return (
@@ -26,9 +23,13 @@ export default function TargetWidget({ list, today }: TargetWidgetProps) {
         const achievedTarger = completeDaysCount === 7; // achievedTarger - если все 7 дней задача выполнена то true
 
         return (
-          <div className="targetWidgetTaskContainer">
+          <div key={listItem.id} className="targetWidgetTaskContainer">
             <div
-              className={achievedTarger ? "targetWidgetPercent__achieved" : "targetWidgetPercent"}
+              className={
+                achievedTarger
+                  ? "targetWidgetPercent__achieved"
+                  : "targetWidgetPercent"
+              }
             >
               {Math.ceil((completeDaysCount / 7) * 100)}%
             </div>
@@ -39,7 +40,11 @@ export default function TargetWidget({ list, today }: TargetWidgetProps) {
               </p>
             </div>
             <div
-              className={achievedTarger ? "targetWidgetAchievedStatus" : "targetWidgetUnachievedStatus"}
+              className={
+                achievedTarger
+                  ? "targetWidgetAchievedStatus"
+                  : "targetWidgetUnachievedStatus"
+              }
             >
               {achievedTarger ? "Achieved" : "Unachieved"}
             </div>

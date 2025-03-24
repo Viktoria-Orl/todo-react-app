@@ -1,13 +1,9 @@
 import React from "react";
-import { TList } from "../types/list.types";
-import "./StrikeWidget.css"
+import { useList } from "../context/ListContext.tsx";
+import "./StrikeWidget.css";
 
-interface StrikeWidgetProps {
-  list: TList[];
-  todayDate: string;
-}
-
-export default function StrikeWidget({ list, todayDate }: StrikeWidgetProps) {
+export default function StrikeWidget() {
+  const { list, todayDate } = useList();
   const activeTaskArray = list.filter((listItem) => !listItem.isDeleted); // массив активных (неудаленных) задач
 
   // массив уникальных отсортированных дат (через reduce и sort?)
@@ -69,7 +65,9 @@ export default function StrikeWidget({ list, todayDate }: StrikeWidgetProps) {
         {currentStrike} {currentStrike === 1 ? "Day" : "Days"}
       </h2>
       <p className="currentStrikeText">Your current strike</p>
-      <h3 className="longestStrikeHeader">{longestStrike} {longestStrike === 1 ? "Day" : "Days"}</h3>
+      <h3 className="longestStrikeHeader">
+        {longestStrike} {longestStrike === 1 ? "Day" : "Days"}
+      </h3>
       <p className="longestStrikeText">Your longest strike</p>
     </div>
   );

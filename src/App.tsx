@@ -9,12 +9,10 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
+      <BrowserRouter basename="/todo-react-app">
         <Routes>
           <Route path="/" element={<Homepage />} />
-          {/* http://localhost:3000 */}
           <Route path="/statistics" element={<Statistic />} />
-          {/* http://localhost:3000/statistics */}
         </Routes>
 
         <NavMenu />

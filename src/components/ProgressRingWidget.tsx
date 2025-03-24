@@ -1,19 +1,12 @@
-import React, { useCallback, useMemo } from "react";
-import { TList } from "../types/list.types";
+import React from "react";
+import { useList } from "../context/ListContext.tsx";
 import "./ProgressRingWidget.css";
-
-type TProgressRingWidgetProps = {
-  list: TList[];
-  todayDate: string;
-};
 
 const radius: number = 57;
 const circumference: number = 2 * Math.PI * radius; // Окружность круга
 
-export default function ProgressRingWidget({
-  list,
-  todayDate,
-}: TProgressRingWidgetProps) {
+export default function ProgressRingWidget() {
+  const { list, todayDate } = useList();
   const actualTaskList = [...list].filter((listItem) => !listItem.isDeleted);
 
   let countTasks = actualTaskList.length;
@@ -30,26 +23,9 @@ export default function ProgressRingWidget({
   const taskWidgetHeader: string = `${countCompletedTasks} of ${countTasks} ${
     countTasks === 1 ? "task" : "tasks"
   }`;
-  const progress: number = countCompletedTasks / countTasks;
+  const progress: number =
+    countTasks > 0 ? countCompletedTasks / countTasks : 0;
   const offset: number = circumference * (1 - progress); // Смещение для текущего процента
-
-  // -----------
-  // useMemo - используется, чтобы закэшировать какое-то значение расчета
-
-  const someHardCalculatedValue = useMemo(() => {
-    return list.map((item) => item.taskName);
-  }, [list]);
-
-  // useCallback - используется, чтобы закэшировать какое-то значение функции
-
-  const handleCheckBoxChange = useCallback(() => {
-    return list.map((item) => item.taskName);
-  }, [list]);
-
-  someHardCalculatedValue.map((item) => item);
-  handleCheckBoxChange().map((item) => item);
-
-  // -----------
 
   return (
     <div className="taskWidget">

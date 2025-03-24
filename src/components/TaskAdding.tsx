@@ -1,19 +1,17 @@
 import React, { useState } from "react";
+import { useList } from "../context/ListContext.tsx";
 import "./TaskAdding.css";
 
-interface TaskAddingProps {
-  taskAdding: (value: string) => void;
-}
-
-function TaskAdding({ taskAdding }: TaskAddingProps) {
+function TaskAdding() {
   const [value, setValue] = useState("");
+  const {addTask} = useList();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
 
   const handleClick = () => {
-    taskAdding(value);
+    addTask(value);
     setValue("");
   };
   

@@ -2,6 +2,7 @@
   "name": "todo-react-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://viktoria-orl.github.io/todo-react-app",
   "dependencies": {
     "classnames": "^2.5.1",
     "cra-template-typescript": "1.2.0",
@@ -14,7 +15,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -36,6 +39,7 @@
   },
   "devDependencies": {
     "@types/react": "^18.3.18",
-    "@types/react-dom": "^18.3.5"
+    "@types/react-dom": "^18.3.5",
+    "gh-pages": "^6.3.0"
   }
 }

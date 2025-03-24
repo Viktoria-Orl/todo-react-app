@@ -1,8 +1,7 @@
 import { TList } from "../types/list.types";
 
-/**
- * Возвращает список из локального хранилища
- */
+//Возвращает список из локального хранилища
+
 export const getListFromLocalStorage = (): Promise<TList[]> => {
   return new Promise((resolve, reject) => {
     const localStorageList = localStorage.getItem("list");
@@ -16,6 +15,8 @@ export const getListFromLocalStorage = (): Promise<TList[]> => {
   });
 };
 
+//Загружает список в локальное хранилище
+
 export const setListToLocalStorage = (list: TList[]): Promise<void> => {
     return new Promise((resolve, reject) => {
       try {
@@ -28,4 +29,3 @@ export const setListToLocalStorage = (list: TList[]): Promise<void> => {
     });
   };
 
-// [{"id":1,"taskName":"Зарядка","completed":false,"completedDates":["11.02.2025","12.02.2025"]},{"id":2,"taskName":"Занятия","completed":false,"completedDates":["10.02.2025","11.02.2025"]},{"id":3,"taskName":"Английский","completed":true,"completedDates":["11.02.2025","12.02.2025","13.02.2025"]},{"id":4,"taskName":"Спорт","completed":true,"completedDates":["11.02.2025","12.02.2025","13.02.2025"],"isDeleted":true}]
