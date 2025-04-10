@@ -1,5 +1,4 @@
 import React from "react";
-import { ListProvider } from "../context/ListContext.tsx";
 import { monthName } from "../constants/date.constants.ts";
 import TaskList from "../components/TaskList.tsx";
 import TaskAdding from "../components/TaskAdding.tsx";
@@ -8,7 +7,7 @@ import "./Homepage.css";
 
 
 
-function HomepageContent() {
+export default function Homepage() {
   const today = new Date();
 
   return (
@@ -22,17 +21,9 @@ function HomepageContent() {
         </div>
         <div className="rightContainer">
           <TaskAdding />
-          <ProgressRingWidget  />
+          <ProgressRingWidget />
         </div>
       </div>
     </>
   );
 }
-
-export default function Homepage() {
-  return (
-    <ListProvider>
-      <HomepageContent />
-    </ListProvider>
-  )
-};

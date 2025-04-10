@@ -2,18 +2,18 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { ReactComponent as HomeIcon } from "../icons/homeButton.svg";
 import { ReactComponent as StatisticsButton } from "../icons/statisticsButton.svg";
-import './NavMenu.css';
+import styles from './NavMenu.module.scss';
 
 function NavMenu() {
   return (
-    <div className="nav-menu__container">
-      <nav className="nav-menu">
-        <button className="nav-menu__homepage">
+    <div className={styles.navContainer}>
+      <nav className={styles.navMenu}>
+        <button>
           <NavLink to="/">
             <HomeIcon />
           </NavLink>
         </button>
-        <button className="nav-menu__statisticPage">
+        <button>
           <NavLink to="/statistics">
             <StatisticsButton />
           </NavLink>

@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { TList } from "../types/list.types.ts";
 import {
-  getListFromLocalStorage,
-  setListToLocalStorage,
+  getListFromServer,
+  addTastToServer,
+  updateTaskOnServer,
 } from "../utils/list.utils.ts";
 
 type TListContext = {
@@ -13,7 +14,6 @@ type TListContext = {
   checkTask: (id: number) => void;
 };
 
-// Создание контекста
 const ListContext = createContext<TListContext>({
   list: [],
   todayDate: "",
@@ -22,25 +22,23 @@ const ListContext = createContext<TListContext>({
   checkTask: () => {},
 });
 
-// Создаем хук для использования контекста в компонентах
 export function useList() {
-  return useContext(ListContext); // <- Consumer, т.е. потребитель контекста
+  return useContext(ListContext);
 }
 
-// const { list } = useList();
-// return <div className={list}></div>
-// т.е. используется как переменная в каждом компоненте, где она требуется
-
-export function ListProvider({ children }) {
+export function ListProvider({
+  children,
+}: React.PropsWithChildren): React.ReactNode {
   const today = new Date();
   const [todayDate] = today.toISOString().split("T");
   const [list, setList] = useState<TList[]>([]);
 
   useEffect(() => {
-    getListFromLocalStorage().then((list) => setList(list));
+    getListFromServer().then((list) => setList(list));
   }, []);
 
   function addTask(taskName: string) {
+    // добавление задачи
     const newTaskName = taskName.trim();
 
     if (!newTaskName) {
@@ -55,20 +53,29 @@ export function ListProvider({ children }) {
       const existTask = list[existTaskIndex];
 
       if (existTask.isDeleted) {
+        // если новая задача уже существует, но была удалена, то возвращаем её
         setList((prevList) => {
           const updatedList = prevList.map((task, index) => {
             if (index === existTaskIndex) {
               const { isDeleted, ...rest } = task;
+
+              updateTaskOnServer(existTask.id, rest) // отправляется на сервер без пометки "isDeleted: true"
+                .then(() =>
+                  console.log(
+                    `Todo list updated on server after returning the deleted task "${existTask.taskName}".`
+                  )
+                )
+                .catch((error) =>
+                  console.log(
+                    `Error updating deleted task"${existTask.taskName}":`,
+                    error.message
+                  )
+                );
+
               return rest;
             }
             return task;
           });
-
-          setListToLocalStorage(updatedList).then(() =>
-            console.log(
-              "LocalStorage updated after returning the deleted task!"
-            )
-          );
 
           return updatedList;
         });
@@ -76,68 +83,78 @@ export function ListProvider({ children }) {
         return alert("This task already exists! Enter a new one.");
       }
     } else {
+      // если задача новая, то добавляется в список
       setList((prevList) => {
-        const newId = list.length ? list[list.length - 1].id + 1 : 1;
-        const updatedList = prevList.concat({
+        const newId: number = prevList.length
+          ? prevList[prevList.length - 1].id + 1
+          : 1;
+        const newTask: TList = {
           id: newId,
           taskName: newTaskName,
           completedDates: [],
-        });
+        };
 
-        setListToLocalStorage(updatedList).then(() =>
-          console.log("LocalStorage updated after adding new task!")
-        );
+        addTastToServer(newTask) // отправка на сервис
+          .then(() =>
+            console.log(`New task "${newTaskName}" is loaded to server`)
+          )
+          .catch((error) => console.log("Error adding task:", error.message));
 
-        return updatedList;
+        return [...prevList, newTask];
       });
     }
   }
 
   function deleteTask(id: number) {
-    setList((prevList) => {
-      const updatedList = prevList.map((task) => {
-        if (task.id === id) {
-          return { ...task, isDeleted: true };
-        } else {
-          return task;
-        }
-      });
+    //удаление задачи
+    const taskToDelete = list.find((task) => task.id === id) as TList;
+    if (!taskToDelete) return; // проверка на ошибку передачи id
 
-      setListToLocalStorage(updatedList).then(() =>
-        console.log("LocalStorage updated after task deletion!")
+    const deletedTask = { ...taskToDelete, isDeleted: true };
+
+    updateTaskOnServer(id, deletedTask) // отправляется на сервер с пометкой "isDeleted: true"
+      .then(() =>
+        console.log(
+          `Todo list updated on server after deletind task "${deletedTask.taskName}".`
+        )
+      )
+      .catch((error) =>
+        console.log(`Error deleting task"${deletedTask.taskName}":`, error.message)
       );
 
-      return updatedList;
-    });
+    setList((prevList) =>
+      prevList.map((task) => (task.id === id ? deletedTask : task))
+    ); //внесение изменений в состояние list
   }
 
   function checkTask(id: number) {
-    setList((prevList) => {
-      const updatedList = prevList.map((task) => {
-        if (task.id === id) {
-          if (task.completedDates.includes(todayDate)) {
-            return {
-              ...task,
-              completedDates: task.completedDates.filter(
-                (date) => date !== todayDate
-              ),
-            };
-          } else {
-            return {
-              ...task,
-              completedDates: [...task.completedDates, todayDate],
-            };
-          }
-        }
-        return task;
-      });
+    const task = list.find((task) => task.id === id) as TList;
+    if (!task) return; // проверка на ошибку передачи id
 
-      setListToLocalStorage(updatedList).then(() =>
-        console.log("LocalStorage updated after changing task completion state")
+    const isCompleted: boolean = task.completedDates.includes(todayDate);
+    const updateTask: TList = { // 
+      ...task,
+      completedDates: isCompleted // если задача сегодня выполнена
+        ? task.completedDates.filter((date) => date !== todayDate) // то убираем дату 
+        : [...task.completedDates, todayDate],
+    };
+
+    updateTaskOnServer(id, updateTask) // отправляется на сервер с пометкой "isDeleted: true"
+      .then(() =>
+        console.log(
+          `Todo list updated after changing task "${task.taskName}" completion state.`
+        )
+      )
+      .catch((error) =>
+        console.log(
+          `Error changing task "${task.taskName}" completion state:`,
+          error.message
+        )
       );
 
-      return updatedList;
-    });
+    setList((prevList) =>
+      prevList.map((task) => (task.id === id ? updateTask : task))
+    ); //внесение изменений в состояние list
   }
 
   return (

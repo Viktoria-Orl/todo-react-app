@@ -6,7 +6,7 @@ export default function StrikeWidget() {
   const { list, todayDate } = useList();
   const activeTaskArray = list.filter((listItem) => !listItem.isDeleted); // массив активных (неудаленных) задач
 
-  // массив уникальных отсортированных дат (через reduce и sort?)
+  // массив уникальных отсортированных дат
   const uniqueCompletedDates: string[] = [...activeTaskArray]
     .flatMap((task) => task.completedDates)
     .reduce((acc: string[], inc: string) => {
@@ -23,29 +23,25 @@ export default function StrikeWidget() {
   // strikeDateArray - массив дат страйков
   // пройтись по массиву активных задачи и добавлять в массив если все задачи содержат  дату страйка
 
-  const strikeDateArray: string[] = [];
+  const strikeDateArray: string[] = [...uniqueCompletedDates].filter((date) =>
+    activeTaskArray.every((task) => task.completedDates.includes(date))
+  );
+
+  console.log(strikeDateArray)
+
   let currentStrike = 0; // текущий страйк - сколько дней подряд (включая сегодняшний) выполнены все задачи
   let longestStrike = 0; // самый длинный страйк - сколько дней подряд максимально были выполнены все задачи
 
-  uniqueCompletedDates.forEach((date, index) => {
-    if (
-      activeTaskArray.every((listItem) =>
-        listItem.completedDates.includes(date)
-      )
-    ) {
-      strikeDateArray.push(date);
-    }
-
-    if (strikeDateArray.length === 1) {
+  for (let i = 0; i < strikeDateArray.length; i++) {
+    if (i === 0) {
       currentStrike = 1;
       longestStrike = 1;
-    } else if (strikeDateArray.length > 1) {
-      const prevDate = new Date(uniqueCompletedDates[index - 1]);
-      const currDate = new Date(date);
+    } else {
+      const prevDate = new Date(strikeDateArray[i - 1]);
+      const currDate = new Date(strikeDateArray[i]);
 
       if (
-        (currDate.getTime() - prevDate.getTime()) / (1000 * 60 * 60 * 24) ===
-        1
+        (currDate.getTime() - prevDate.getTime()) / (1000 * 60 * 60 * 24) === 1
       ) {
         currentStrike++;
         longestStrike = Math.max(longestStrike, currentStrike);
@@ -53,8 +49,10 @@ export default function StrikeWidget() {
         currentStrike = 1;
       }
     }
-  });
+  }
 
+/*   console.log(currentStrike, longestStrike, strikeDateArray) */
+  // Если сегодняшняя дата не в strikeDateArray — сбрасываем currentStrike
   if (!strikeDateArray.includes(todayDate)) {
     currentStrike = 0;
   }
